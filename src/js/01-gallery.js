@@ -2,7 +2,6 @@
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 import { galleryItems } from './gallery-items';
-// Change code below this line
 
 document.querySelector(".gallery").insertAdjacentHTML(
     'beforeend',
