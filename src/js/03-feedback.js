@@ -1,46 +1,44 @@
 import throttle from 'lodash.throttle';
 
-const refs = {
-    form: document.querySelector(".feedback-form"),
-    textArea: document.querySelector(".feedback-form textarea"),
-    inputEl: document.querySelector(".feedback-form input")
+const feedBackFormRef = document.querySelector('.feedback-form');
+const emailRef = feedBackFormRef.elements.email;
+const messageRef = feedBackFormRef.elements.message;
+const formData = {};
+const KEYMSG = '"message';
+
+feedBackFormRef.addEventListener('input', throttle(onFormInput, 500));
+
+feedBackFormRef.addEventListener('submit', onFormSubmit);
+
+getLocaleStorageData();
+
+setformData();
+
+function getLocaleStorageData() {
+  if (localStorage.getItem(KEYMSG)) {
+    const storageData = JSON.parse(localStorage.getItem(KEYMSG));
+    emailRef.value = storageData.email;
+    messageRef.value = storageData.message;
+  }
 }
-const KEYMSG = "message"
-const KEYEMAIL = "email"
-const formData =[]
-refs.form.addEventListener("submit", onFormSubmit);
-refs.textArea.addEventListener("input", throttle(onClickInput, 500))
-// refs.textArea.addEventListener("input", onClickInput)
 
-refs.form.addEventListener("input", e => {
-   
-    formData[e.target.name] = e.target.value
-    localStorage.setItem([e.target.name], e.target.value)
-})
+function setformData() {
+  formData.email = emailRef.value;
+  formData.message = messageRef.value;
+}
 
-
-
+function onFormInput(e) {
+  formData[e.target.name] = e.target.value;
+  localStorage.setItem(KEYMSG, JSON.stringify(formData));
+}
 
 function onFormSubmit(e) {
-    e.preventDefault()
-    e.currentTarget.reset()
-    localStorage.removeItem(KEYMSG)
-    localStorage.removeItem(KEYEMAIL)
-}    
-function onClickInput(e) {
+  e.preventDefault();
+  if (formData.email !== '' && formData.message !== '') {
+    console.log(formData);
 
-    localStorage.setItem(KEYMSG, value)
-
-}
-
-
-textAreaSave()
-function textAreaSave() {
-  
-    const saveMasege = localStorage.getItem(KEYMSG)
-    const saveEmail = localStorage.getItem(KEYEMAIL)
-    if (saveMasege || saveEmail) {
-        refs.textArea.value = saveMasege
-        refs.inputEl.value = saveEmail
-    }
+    e.currentTarget.reset();
+    localStorage.removeItem(KEYMSG);
+    setformData();
+  }
 }
