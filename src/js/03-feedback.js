@@ -36,7 +36,7 @@ function onClickInput(e) {
 
 textAreaSave()
 function textAreaSave() {
-    console.log(1)
+  
     const saveMasege = localStorage.getItem(KEYMSG)
     const saveEmail = localStorage.getItem(KEYEMAIL)
     if (saveMasege || saveEmail) {
